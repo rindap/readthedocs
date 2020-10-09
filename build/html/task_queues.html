@@ -1,0 +1,824 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Task Queues &#8212; tryingrtfd soon , so very soon documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Rate Limit Profiles" href="rate_limit_profiles.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="task-queues">
+<h1>Task Queues<a class="headerlink" href="#task-queues" title="Permalink to this headline">¶</a></h1>
+<p>TaskQueue helps the process management system to manage and control how tasks are executed and determine
+capable Workers to accomplish those Tasks. Tasks are evaluated through predefined Workflow and based on the
+evaluation results, Tasks are given to TaskQueue to  handle by an appropriate Worker.</p>
+<div class="section" id="taskqueue-properties">
+<h2>TaskQueue Properties<a class="headerlink" href="#taskqueue-properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils" id="id5">
+<caption><span class="caption-text">Properties</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">field</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>sid</strong></td>
+<td>The unique string that we created to identify the TaskQueue resource.</td>
+</tr>
+<tr class="row-odd"><td><strong>account_sid</strong></td>
+<td>The SID of the Account that created the TaskQueue resource.</td>
+</tr>
+<tr class="row-even"><td><strong>workspace_sid</strong></td>
+<td>The SID of the Workspace that contains the TaskQueue</td>
+</tr>
+<tr class="row-odd"><td><strong>friendly_name</strong></td>
+<td>The string that you assigned to describe the resource.</td>
+</tr>
+<tr class="row-even"><td><strong>worker_requirements</strong></td>
+<td>A JSON String for the JsonLogic rule , deciding the Worker relations for the TaskQueue</td>
+</tr>
+<tr class="row-odd"><td><strong>date_created</strong></td>
+<td>The date and time in GMT when the resource was created, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-even"><td><strong>date_updated</strong></td>
+<td>The date and time in GMT when the resource was last updated, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-odd"><td><strong>url</strong></td>
+<td>The absolute URL of the RateLimitProfile resource</td>
+</tr>
+<tr class="row-even"><td><strong>links</strong></td>
+<td>The URLs of related resources.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="taskqueue-worker-requirements">
+<h3>TaskQueue worker requirements<a class="headerlink" href="#taskqueue-worker-requirements" title="Permalink to this headline">¶</a></h3>
+<p>A TaskQueue’s worker requirements is a JsonLogic rule,used to simply and accurately represent the necessary features or skills required for handling a Task in this TaskQueue</p>
+<p>For example , a worker with attributes such as the one below:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;john doe&quot;</span>
+<span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">44</span>
+<span class="s2">&quot;department&quot;</span> <span class="p">:</span> <span class="s2">&quot;support&quot;</span>
+<span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;Utah&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>would be receiving Tasks from a TaskQueue with worker_requirements as such:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;==&quot;</span><span class="p">:[{</span><span class="nt">&quot;var&quot;</span><span class="p">:</span><span class="s2">&quot;department&quot;</span><span class="p">},</span><span class="s2">&quot;support&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Because the requirement rules for the TaskQueue would be matching the attributes of the Worker.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>Understanding the “requirements vs attributes” model is fundamental.</strong></p>
+<p>With this <strong>requirements vs attributes</strong> model,you do not need to point out
+which TaskQueues a Worker needs to receive Tasks from or which Workers are suitable for the Tasks in a TaskQueue.</p>
+<p>When you create a Worker , the Worker will automatically be receiving Tasks from appropriate TaskQueues. And when
+attributes of a Worker are updated, the Workers related TaskQueues are updated accordingly.</p>
+<p class="last">The same goes for TaskQueues : When requirements for a TaskQueue are updated , the related Workers for the TaskQueue
+are updated.</p>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-taskqueue">
+<h2>Create A TaskQueue<a class="headerlink" href="#create-a-taskqueue" title="Permalink to this headline">¶</a></h2>
+<dl class="post">
+<dt id="post--v1-rindap-rest-gw-Workspaces-WorkspaceSID-TaskQueues">
+<code class="descname">POST </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues</code><a class="headerlink" href="#post--v1-rindap-rest-gw-Workspaces-WorkspaceSID-TaskQueues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>You can create a TaskQueue by simply providing a <cite>FriendlyName</cite></p>
+<table border="1" class="colwidths-given docutils" id="id6">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>FriendlyName</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>Human readable friendly name. It can be 512 characters long</td>
+</tr>
+<tr class="row-even"><td><strong>WorkerRequirements</strong></td>
+<td>JSON Object</td>
+<td>{“==”:[1,1]}</td>
+<td>(optional) A URL-encoded JSON string , representing a JsonLogic rule for Worker relation</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example-code-pieces-using-sdks">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#example-code-pieces-using-sdks" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X POST https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;FriendlyName=my test task queue&#39;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.TaskQueue</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">TaskQueue</span> <span class="n">tq</span> <span class="o">=</span> <span class="n">TaskQueue</span><span class="p">.</span><span class="na">creator</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setFriendlyName</span><span class="p">(</span><span class="s">&quot;my test task queue&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">create</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">tq</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create a task queue</span>
+<span class="n">task_queue</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">task_queues</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;My new task queue&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print task queue content</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue FriendlyName: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task_queue</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue Sid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task_queue</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+
+<span class="c1">// Crate a task queue</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">taskQueues</span>
+<span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+    <span class="nx">friendlyName</span><span class="o">:</span> <span class="s2">&quot;Friendly Name&quot;</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">taskQueue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Create a taskQueue</span>
+        <span class="kt">var</span> <span class="n">taskQueue</span> <span class="p">=</span> <span class="n">TaskQueueResource</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">friendlyName</span><span class="p">:</span> <span class="s">&quot;New Task Queue&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print taskQueue content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;TaskQueue Sid : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Friendly Name : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test task queue&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="get-all-taskqueues">
+<h2>Get All TaskQueues<a class="headerlink" href="#get-all-taskqueues" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.TaskQueue</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">TaskQueue</span><span class="p">.</span><span class="na">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">TaskQueue</span><span class="p">.</span><span class="na">reader</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">);</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="n">TaskQueue</span> <span class="n">tq</span><span class="p">:</span><span class="n">reader</span><span class="p">.</span><span class="na">read</span><span class="p">())</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">tq</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get all task queues</span>
+<span class="n">task_queue_fetcher</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">task_queues</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">task_queue</span> <span class="ow">in</span> <span class="n">task_queue_fetcher</span><span class="p">:</span>
+    <span class="c1"># Print task queue content</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue FriendlyName: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task_queue</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue Sid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task_queue</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+
+<span class="c1">// List all task queues</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">taskQueues</span>
+<span class="p">.</span><span class="nx">list</span><span class="p">({</span>
+    <span class="nx">limit</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="nx">pageSize</span><span class="o">:</span> <span class="mi">100</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">taskQueues</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">taskQueues</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+    <span class="p">})</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// List all taskQueues</span>
+        <span class="kt">var</span> <span class="n">taskQueues</span> <span class="p">=</span> <span class="n">TaskQueueResource</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="m">100</span><span class="p">,</span>
+            <span class="n">pageSize</span><span class="p">:</span> <span class="m">100</span>
+            <span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">taskQueue</span> <span class="k">in</span> <span class="n">taskQueues</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Print taskQueue content</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;TaskQueue Sid : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Friendly Name : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>&gt; The above command returns JSON structured like this:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;page_size&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="nt">&quot;page&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;first_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues?Page=0&amp;PageSize=50&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;previous_page_url&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues?Page=0&amp;PageSize=50&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;task_queues&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;next_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues?Page=1&amp;PageSize=50&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;task_queues&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+    <span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test task queue&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>### HTTP Request
+<cite>GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues</cite></p>
+<p>### Query Parameters
+Parameter | Type | Default | Description
+——— | ——- | ——- | ———–
+WorkspaceSID | String | ‘’ | The SID of the Workspace
+FriendlyName | String | ‘’ | (optional) Human readable friendly name
+PageSize | Integer | 50 | Page size for paging
+Page | Integer| 0 | Page number for paging</p>
+</div>
+</div>
+<div class="section" id="fetch-a-taskqueue">
+<h2>Fetch a TaskQueue<a class="headerlink" href="#fetch-a-taskqueue" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.TaskQueue</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">TaskQueue</span> <span class="n">tq</span> <span class="o">=</span> <span class="n">TaskQueue</span>
+            <span class="p">.</span><span class="na">fetcher</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">fetch</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">tq</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get task with sid</span>
+<span class="n">task_queue</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">task_queues</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Print task queue content</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue FriendlyName: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task_queue</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue Sid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task_queue</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Get a task queues with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">taskQueues</span><span class="p">(</span><span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">taskQueue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Get a taskQueue with SID</span>
+        <span class="kt">var</span> <span class="n">taskQueue</span> <span class="p">=</span> <span class="n">TaskQueueResource</span><span class="p">.</span><span class="n">Fetch</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print taskQueue content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;TaskQueue Sid : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Friendly Name : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test task queue&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This endpoint fetches a single TaskQueue with all its details</p>
+<p>### HTTP Request
+<cite>GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}</cite></p>
+<p>### Query Parameters
+Parameter | Type | Default | Description
+——— | ——- | ——- | ———–
+WorkspaceSID | String | ‘’ | Workspace SID in which the Task is created
+TaskQueueSID | String | ‘’ | The SID of the TaskQueue</p>
+<p>##Update a TaskQueue</p>
+</div>
+<div class="section" id="id3">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;FriendlyName=my new name of task queue&#39;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.TaskQueue</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">TaskQueue</span> <span class="n">tq</span> <span class="o">=</span> <span class="n">TaskQueue</span>
+            <span class="p">.</span><span class="na">updater</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setFriendlyName</span><span class="p">(</span><span class="s">&quot;my new name of task queue&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">update</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">tq</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get task with sid</span>
+<span class="n">task_queue</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">task_queues</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="n">updated_task_queue</span> <span class="o">=</span> <span class="n">task_queue</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">friendly_name</span><span class="o">=</span><span class="s2">&quot;My Task Queue New Name&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print task queue content</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue FriendlyName: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_task_queue</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue Sid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_task_queue</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+
+<span class="c1">// Update a task queues with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">taskQueues</span><span class="p">(</span><span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">friendlyName</span><span class="o">:</span> <span class="s2">&quot;New Friendly Name&quot;</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">taskQueue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taskQueue</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Update a taskQueue with SID</span>
+        <span class="kt">var</span> <span class="n">taskQueue</span> <span class="p">=</span> <span class="n">TaskQueueResource</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">friendlyName</span><span class="p">:</span> <span class="s">&quot;New Friendly Name&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print taskQueue content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;TaskQueue Sid : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Friendly Name : &quot;</span> <span class="p">+</span> <span class="n">taskQueue</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my new name of task queue&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T09:38:26+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>### HTTP Request
+<cite>PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}</cite></p>
+<p>### Query Parameters
+Parameter | Type | Description
+——— | ——-  | ———–
+WorkspaceSID | String | The SID of the Workspace
+TaskQueueSID | String | The SID of the TaskQueue
+FriendlyName | String | Human readable friendly name
+WorkerRequirements | JSON Object | A URL-encoded JSON string , representing a JsonLogic rule for deciding the Worker relations for the TaskQueue</p>
+</div>
+</div>
+<div class="section" id="delete-a-taskqueue">
+<h2>Delete a TaskQueue<a class="headerlink" href="#delete-a-taskqueue" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X DEL https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/TaskQueues/WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.TaskQueue</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">TaskQueue</span><span class="p">.</span><span class="na">deleter</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">delete</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get task with sid and delete it</span>
+<span class="k">if</span> <span class="n">workspace</span><span class="o">.</span><span class="n">task_queues</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskQueue has been deleted!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Delete a task queues with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">taskQueues</span><span class="p">(</span><span class="s2">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Delete a taskQueue with SID</span>
+        <span class="kt">var</span> <span class="n">isDeleted</span> <span class="p">=</span> <span class="n">TaskQueueResource</span><span class="p">.</span><span class="n">Delete</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WQxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">isDeleted</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;TaskQueue has been deleted!&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>### HTTP Request
+<cite>DEL https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}</cite></p>
+<p>### Query Parameters
+Parameter | Type | Default | Description
+——— | ——- | ——- | ———–
+WorkspaceSID | String | ‘’ | The SID of the Workspace
+TaskQueueSID | String | ‘’ | The SID of the TaskQueue</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">tryingrtfd</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workspaces.html">Workspaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">Workers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tasks.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rate_limit_profiles.html">Rate Limit Profiles</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Task Queues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#taskqueue-properties">TaskQueue Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-taskqueue">Create A TaskQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-all-taskqueues">Get All TaskQueues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fetch-a-taskqueue">Fetch a TaskQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-a-taskqueue">Delete a TaskQueue</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="rate_limit_profiles.html" title="previous chapter">Rate Limit Profiles</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, yigit ahmet ali veli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/task_queues.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

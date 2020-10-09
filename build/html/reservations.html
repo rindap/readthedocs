@@ -1,0 +1,1325 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Reservations &#8212; tryingrtfd soon , so very soon documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Task Queues" href="task_queues.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="reservations">
+<h1>Reservations<a class="headerlink" href="#reservations" title="Permalink to this headline">¶</a></h1>
+<p>Rindap creates a Reservation subresource whenever a Task is reserved for a Worker. Rindap will provide the details
+of this Reservation subresource in the Assignment Callback HTTP request it makes to your application server. You can read more about <a class="reference external" href="https://rindap.com/reservation/">Reservations here</a></p>
+<p>You have multiple options for handling a Reservation:</p>
+<ul class="simple">
+<li>Respond to the Assignment Callback with an Assignment Instruction.</li>
+<li>Call the REST API with how to handle it.</li>
+</ul>
+<p>You can read more about <a class="reference external" href="https://rindap.com/reservation/">Reservations here</a></p>
+<div class="section" id="reservation-properties">
+<h2>Reservation Properties<a class="headerlink" href="#reservation-properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils" id="id7">
+<caption><span class="caption-text">Properties</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">field</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>sid</strong></td>
+<td>The unique string that we created to identify the Reservation resource.</td>
+</tr>
+<tr class="row-odd"><td><strong>account_sid</strong></td>
+<td>The SID of the Account</td>
+</tr>
+<tr class="row-even"><td><strong>workspace_sid</strong></td>
+<td>The SID of the Workspace</td>
+</tr>
+<tr class="row-odd"><td><strong>worker_sid</strong></td>
+<td>The SID of the reserved Worker resource</td>
+</tr>
+<tr class="row-even"><td><strong>task_sid</strong></td>
+<td>The SID of the reserved Task resource</td>
+</tr>
+<tr class="row-odd"><td><strong>reservation_status</strong></td>
+<td>The current status of the reservation. Can be: pending, accepted, rejected.</td>
+</tr>
+<tr class="row-even"><td><strong>date_created</strong></td>
+<td>The date and time in GMT when the resource was created, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-odd"><td><strong>date_updated</strong></td>
+<td>The date and time in GMT when the resource was last updated, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-even"><td><strong>url</strong></td>
+<td>The absolute URL of the RateLimitProfile resource</td>
+</tr>
+<tr class="row-odd"><td><strong>links</strong></td>
+<td>The URLs of related resources.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="accessing-reservations">
+<h3>Accessing Reservations<a class="headerlink" href="#accessing-reservations" title="Permalink to this headline">¶</a></h3>
+<p>There are 3 ways to access a Reservation resource:</p>
+<ul class="simple">
+<li>For accessing a certain Reservation with Its SID , You can access It through Its Task or Worker.</li>
+<li>For accessing all Reservations of a certain Task, you need to access through the Task</li>
+<li>For accessing all Reservations of a certain Worker, you need to access through the Worker</li>
+</ul>
+</div>
+</div>
+<div class="section" id="through-a-task-fetching-a-reservation">
+<h2>Through a Task: Fetching a Reservation<a class="headerlink" href="#through-a-task-fetching-a-reservation" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID-Reservations-ReservationSID">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks/{TaskSID}/Reservations/{ReservationSID}</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID-Reservations-ReservationSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This endpoint fetches a single Reservation with all its details</p>
+<table border="1" class="colwidths-given docutils" id="id8">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>TaskSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Task</td>
+</tr>
+<tr class="row-even"><td><strong>ReservationSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Reservation</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example-code-pieces-using-sdks">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#example-code-pieces-using-sdks" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="c1">// IMPORTING from com.rindap.rest.v1.workspace.task package</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.task.Reservation</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Reservation</span> <span class="n">r</span><span class="o">=</span><span class="n">Reservation</span><span class="p">.</span><span class="na">fetcher</span><span class="p">(</span>
+        <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="c1">// Task SID</span>
+        <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">fetch</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get Task with SID</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Get reservation with SID</span>
+<span class="n">reservation</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">reservations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation SID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation Status: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">reservation_status</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Get a reservation with task and reservation SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">reservations</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">reservation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">reservationStatus</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace.Task</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Fetch a reservation with SID</span>
+        <span class="kt">var</span> <span class="n">reservation</span> <span class="p">=</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">Fetch</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathTaskSid</span><span class="p">:</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print Reservation Content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation SID   : &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation Status: &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">ReservationStatus</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;worker_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;task_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;reservation_status&quot;</span><span class="p">:</span> <span class="s2">&quot;rejected&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:47:15+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:49:42+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="through-a-task-listing-all-reservations-of-a-task">
+<h2>Through a Task: Listing All Reservations of A Task<a class="headerlink" href="#through-a-task-listing-all-reservations-of-a-task" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID-Reservations">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks/{TaskSID}/Reservations</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID-Reservations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This endpoint retrives all Reservations of a Task</p>
+<table border="1" class="colwidths-given docutils" id="id9">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>TaskSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Task</td>
+</tr>
+<tr class="row-even"><td><strong>ReservationStatus</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>(optional) The current status of the reservation. Can be: pending, accepted, rejected, completed. Can be used for filtering</td>
+</tr>
+<tr class="row-odd"><td><strong>WorkerSid</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>(optional) The SID of the reserved Worker. Can be used to filter the Reservations by Worker</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id2">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="c1">// IMPORTING from com.rindap.rest.v1.workspace.task package</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.task.Reservation</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Reservation</span><span class="p">.</span><span class="na">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Reservation</span><span class="p">.</span><span class="na">reader</span><span class="p">(</span>
+        <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">setReservationStatus</span><span class="p">(</span><span class="n">Reservation</span><span class="p">.</span><span class="na">Status</span><span class="p">.</span><span class="na">ACCEPTED</span><span class="p">)</span>
+        <span class="p">;</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="n">Reservation</span> <span class="n">r</span><span class="p">:</span><span class="n">reader</span><span class="p">.</span><span class="na">read</span><span class="p">())</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get Task with SID</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Get all reservation</span>
+<span class="n">reservations</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">reservations</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">reservation</span> <span class="ow">in</span> <span class="n">reservations</span><span class="p">:</span>
+    <span class="c1"># Print Content of reservation</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation SID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation Status: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">reservation_status</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// List all reservations</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">reservations</span>
+<span class="p">.</span><span class="nx">list</span><span class="p">({</span>
+    <span class="nx">limit</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="nx">pageSize</span><span class="o">:</span> <span class="mi">100</span>
+<span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">reservations</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">reservations</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">reservation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">reservationStatus</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace.Task</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Get all reservations</span>
+        <span class="kt">var</span> <span class="n">reservations</span> <span class="p">=</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathTaskSid</span><span class="p">:</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="m">100</span><span class="p">,</span>
+            <span class="n">pageSize</span><span class="p">:</span> <span class="m">100</span>
+            <span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">reservation</span> <span class="k">in</span> <span class="n">reservations</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Print Reservation Content</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation SID   : &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation Status: &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">ReservationStatus</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;page_size&quot;</span><span class="p">:</span> <span class="mi">2147483647</span><span class="p">,</span>
+    <span class="nt">&quot;page&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;first_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations?Page=0&amp;PageSize=2147483647&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;previous_page_url&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations?Page=0&amp;PageSize=2147483647&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;next_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations?Page=1&amp;PageSize=2147483647&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;reservations&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;worker_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;task_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;reservation_status&quot;</span><span class="p">:</span> <span class="s2">&quot;rejected&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:47:15+03:00&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:49:42+03:00&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="through-a-task-updating-a-reservation">
+<h2>Through a Task: Updating a reservation<a class="headerlink" href="#through-a-task-updating-a-reservation" title="Permalink to this headline">¶</a></h2>
+<dl class="put">
+<dt id="put--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID-Reservations-ReservationSID">
+<code class="descname">PUT </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks/{TaskSID}/Reservations/{ReservationSID}</code><a class="headerlink" href="#put--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID-Reservations-ReservationSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can only update a Reservation while It’s at the <cite>pending</cite> status</p>
+</div>
+<p>You can update a Reservation by updating Its <code class="docutils literal notranslate"><span class="pre">ReservationStatus</span></code>.</p>
+<ul>
+<li><p class="first"><strong>accepted</strong> - use this for accepting a reservation, which means that the Worker will process the Task</p>
+</li>
+<li><p class="first"><strong>rejected</strong> - use this for rejecting a reservation.At this situation, Rindap will reject the Reservation and try to assing the Task to another available Worker</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>completed</strong> - This is a special status setting, a shortcut, for saying that the Reservation is accepted and the Task is completed , or can be considered completed.</dt>
+<dd><dl class="first docutils">
+<dt>After receiving this status,</dt>
+<dd><ul class="first last simple">
+<li>the Reservation will be updated as <cite>accepted</cite></li>
+<li>the Task will be updated as <cite>completed</cite></li>
+<li>the Worker will be updated as <cite>idle</cite> and will be availabe for Reservations</li>
+</ul>
+</dd>
+</dl>
+<p class="last">This is useful for Workers with short-lived functions such as a WebService endpoint where your application does whatever needed to be done, instantaneously</p>
+</dd>
+</dl>
+</li>
+</ul>
+<table border="1" class="colwidths-given docutils" id="id10">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>TaskSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Task</td>
+</tr>
+<tr class="row-even"><td><strong>ReservationStatus</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>the status of the reservation. Can be “accepted”,”rejected” or “completed”</td>
+</tr>
+<tr class="row-odd"><td><strong>ReservationSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Reservation</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id3">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;ReservationStatus=accepted&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;AssignmentStatus=pending&#39;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="c1">// IMPORTING from com.rindap.rest.v1.workspace.task package</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.task.Reservation</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Reservation</span> <span class="n">r</span><span class="o">=</span><span class="n">Reservation</span>
+        <span class="p">.</span><span class="na">updater</span><span class="p">(</span>
+        <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="c1">// Task SID</span>
+        <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">setReservationStatus</span><span class="p">(</span><span class="n">Reservation</span><span class="p">.</span><span class="na">Status</span><span class="p">.</span><span class="na">ACCEPTED</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">update</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get Task with SID</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Get reservation with SID</span>
+<span class="n">reservation</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">reservations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="n">updated_reservation</span> <span class="o">=</span> <span class="n">reservation</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reservation_status</span><span class="o">=</span><span class="s1">&#39;rejected&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation SID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_reservation</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation Status: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_reservation</span><span class="o">.</span><span class="n">reservation_status</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Update a reservation with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">reservations</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">reservationStatus</span><span class="o">:</span> <span class="s1">&#39;rejected&#39;</span>
+<span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">reservation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace.Task</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Fetch a reservation with SID</span>
+        <span class="kt">var</span> <span class="n">reservation</span> <span class="p">=</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathTaskSid</span><span class="p">:</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">reservationStatus</span><span class="p">:</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">StatusEnum</span><span class="p">.</span><span class="n">Rejected</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print Reservation Content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation SID   : &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation Status: &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">ReservationStatus</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;worker_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;task_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;reservation_status&quot;</span><span class="p">:</span> <span class="s2">&quot;rejected&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:47:15+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:49:42+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="through-a-worker-fetching-a-reservation">
+<h2>Through a Worker: Fetching a Reservation<a class="headerlink" href="#through-a-worker-fetching-a-reservation" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Workers-WorkerSID-Reservations-ReservationSID">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Workers/{WorkerSID}/Reservations/{ReservationSID}</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Workers-WorkerSID-Reservations-ReservationSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This endpoint fetches a single Reservation with all its details</p>
+<table border="1" class="colwidths-given docutils" id="id11">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>WorkerSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Worker</td>
+</tr>
+<tr class="row-even"><td><strong>ReservationSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Reservation</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id4">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+
+<span class="c1">// IMPORTING from com.rindap.rest.v1.workspace.worker package</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.worker.Reservation</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Reservation</span> <span class="n">r</span><span class="o">=</span><span class="n">Reservation</span><span class="p">.</span><span class="na">fetcher</span><span class="p">(</span>
+        <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="s">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="c1">// Worker SID</span>
+        <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">fetch</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get Worker with SID</span>
+<span class="n">worker</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Get reservation with SID</span>
+<span class="n">reservation</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">reservations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation SID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation Status: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">reservation_status</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Get a reservation with worker and reservation SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">workers</span><span class="p">(</span><span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">reservations</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">reservation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace.Worker</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Fetch a reservation with SID</span>
+        <span class="kt">var</span> <span class="n">reservation</span> <span class="p">=</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">Fetch</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathWorkerSid</span><span class="p">:</span> <span class="s">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print Reservation Content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation SID   : &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation Status: &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">ReservationStatus</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;worker_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;task_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;reservation_status&quot;</span><span class="p">:</span> <span class="s2">&quot;rejected&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:47:15+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:49:42+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="through-a-worker-listing-all-reservations-of-a-worker">
+<h2>Through a Worker: Listing All Reservations of A Worker<a class="headerlink" href="#through-a-worker-listing-all-reservations-of-a-worker" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Workers-WorkerSID-Reservations">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Workers/{WorkerSID}/Reservations</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Workers-WorkerSID-Reservations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This endpoint retrives all Reservations of a Worker</p>
+<table border="1" class="colwidths-given docutils" id="id12">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>WorkerSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Worker</td>
+</tr>
+<tr class="row-even"><td><strong>ReservationStatus</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>(optional) The current status of the reservation. Can be: pending, accepted, rejected. Can be used for filtering</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id5">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="c1">//IMPORTING Reservation from com.rindap.rest.v1.workspace.worker</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.worker.Reservation</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Reservation</span><span class="p">.</span><span class="na">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Reservation</span><span class="p">.</span><span class="na">reader</span><span class="p">(</span>
+        <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="s">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">);</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="n">Reservation</span> <span class="n">r</span><span class="p">:</span><span class="n">reader</span><span class="p">.</span><span class="na">read</span><span class="p">())</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get Worker with SID</span>
+<span class="n">worker</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Get all reservation</span>
+<span class="n">reservations</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">reservations</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">reservation</span> <span class="ow">in</span> <span class="n">reservations</span><span class="p">:</span>
+    <span class="c1"># Print Content of reservation</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation SID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation Status: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reservation</span><span class="o">.</span><span class="n">reservation_status</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// List all reservations</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">workers</span><span class="p">(</span><span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">reservations</span>
+<span class="p">.</span><span class="nx">list</span><span class="p">({</span>
+    <span class="nx">limit</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="nx">pageSize</span><span class="o">:</span> <span class="mi">100</span>
+<span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">reservations</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">reservations</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">reservation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">reservationStatus</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace.Worker</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// List all reservations</span>
+        <span class="kt">var</span> <span class="n">reservations</span> <span class="p">=</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathWorkerSid</span><span class="p">:</span> <span class="s">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="m">100</span><span class="p">,</span>
+            <span class="n">pageSize</span><span class="p">:</span> <span class="m">100</span>
+            <span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">reservation</span> <span class="k">in</span> <span class="n">reservations</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Print Reservation Content</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation SID   : &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation Status: &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">ReservationStatus</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;page_size&quot;</span><span class="p">:</span> <span class="mi">2147483647</span><span class="p">,</span>
+    <span class="nt">&quot;page&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;first_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations?Page=0&amp;PageSize=2147483647&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;previous_page_url&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations?Page=0&amp;PageSize=2147483647&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;next_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations?Page=1&amp;PageSize=2147483647&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;reservations&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;worker_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;task_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;reservation_status&quot;</span><span class="p">:</span> <span class="s2">&quot;rejected&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:47:15+03:00&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-23T13:49:42+03:00&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="through-a-worker-updating-a-reservation">
+<h2>Through a Worker: Updating a reservation<a class="headerlink" href="#through-a-worker-updating-a-reservation" title="Permalink to this headline">¶</a></h2>
+<dl class="put">
+<dt id="put--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Workers-WorkerSID-Reservations-ReservationSID">
+<code class="descname">PUT </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Workers/{WorkerSID}/Reservations/{ReservationSID}</code><a class="headerlink" href="#put--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Workers-WorkerSID-Reservations-ReservationSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can only update a Reservation while It’s at the <code class="docutils literal notranslate"><span class="pre">pending</span></code> status</p>
+</div>
+<p>You can update a Reservation by updating Its <code class="docutils literal notranslate"><span class="pre">ReservationStatus</span></code>.</p>
+<ul>
+<li><p class="first"><strong>accepted</strong> - use this for accepting a reservation, which means that the Worker will process the Task</p>
+</li>
+<li><p class="first"><strong>rejected</strong> - use this for rejecting a reservation.At this situation, Rindap will reject the Reservation and try to assing the Task to another available Worker</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>completed</strong> - This is a special status setting, a shortcut, for saying that the Reservation is accepted and the Task is completed , or can be considered completed.</dt>
+<dd><dl class="first docutils">
+<dt>After receiving this status,</dt>
+<dd><ul class="first last simple">
+<li>the Reservation will be updated as <cite>accepted</cite></li>
+<li>the Task will be updated as <cite>completed</cite></li>
+<li>the Worker will be updated as <cite>idle</cite> and will be availabe for Reservations</li>
+</ul>
+</dd>
+</dl>
+<p class="last">This is useful for Workers with short-lived functions such as a WebService endpoint where your application does whatever needed to be done, instantaneously</p>
+</dd>
+</dl>
+</li>
+</ul>
+<table border="1" class="colwidths-given docutils" id="id13">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the <cite>Workspace</cite></td>
+</tr>
+<tr class="row-odd"><td><strong>WorkerSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Worker</td>
+</tr>
+<tr class="row-even"><td><strong>ReservationStatus</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>the status of the reservation. Can be “accepted”,”rejected” or “completed”</td>
+</tr>
+<tr class="row-odd"><td><strong>ReservationSID</strong></td>
+<td>String</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>The SID of the Reservation</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id6">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Reservations/WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;ReservationStatus=accepted&#39;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="c1">//IMPORTING Reservation from package com.rindap.rest.v1.workspace.worker</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.worker.Reservation</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Reservation</span> <span class="n">r</span><span class="o">=</span><span class="n">Reservation</span>
+        <span class="p">.</span><span class="na">updater</span><span class="p">(</span>
+        <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+        <span class="s">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="c1">// Worker SID</span>
+        <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">setReservationStatus</span><span class="p">(</span><span class="n">Reservation</span><span class="p">.</span><span class="na">Status</span><span class="p">.</span><span class="na">ACCEPTED</span><span class="p">)</span>
+        <span class="p">.</span><span class="na">update</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get Worker with SID</span>
+<span class="n">worker</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Get reservation with SID</span>
+<span class="n">reservation</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">reservations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Update Reservation</span>
+<span class="n">updated_reservation</span> <span class="o">=</span> <span class="n">reservation</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reservation_status</span><span class="o">=</span><span class="s1">&#39;rejected&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation SID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_reservation</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reservation Status: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_reservation</span><span class="o">.</span><span class="n">reservation_status</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// UPdate a reservation with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">workers</span><span class="p">(</span><span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">reservations</span><span class="p">(</span><span class="s2">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">reservationStatus</span><span class="o">:</span> <span class="s1">&#39;rejected&#39;</span>
+<span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">reservation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reservation</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace.Worker</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Update a reservation with SID</span>
+        <span class="kt">var</span> <span class="n">reservation</span> <span class="p">=</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathWorkerSid</span><span class="p">:</span> <span class="s">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WRxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">reservationStatus</span><span class="p">:</span> <span class="n">ReservationResource</span><span class="p">.</span><span class="n">StatusEnum</span><span class="p">.</span><span class="n">Completed</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print Reservation Content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation SID   : &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Reservation Status: &quot;</span> <span class="p">+</span> <span class="n">reservation</span><span class="p">.</span><span class="n">ReservationStatus</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;queues&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;WQ00xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WQ11xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WQ22xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">],</span>
+<span class="nt">&quot;activity&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+<span class="nt">&quot;available&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test worker&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T11:03:41+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T11:03:41+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers/WKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">tryingrtfd</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workspaces.html">Workspaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">Workers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tasks.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rate_limit_profiles.html">Rate Limit Profiles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="task_queues.html">Task Queues</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reservations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reservation-properties">Reservation Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#through-a-task-fetching-a-reservation">Through a Task: Fetching a Reservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#through-a-task-listing-all-reservations-of-a-task">Through a Task: Listing All Reservations of A Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#through-a-task-updating-a-reservation">Through a Task: Updating a reservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#through-a-worker-fetching-a-reservation">Through a Worker: Fetching a Reservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#through-a-worker-listing-all-reservations-of-a-worker">Through a Worker: Listing All Reservations of A Worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#through-a-worker-updating-a-reservation">Through a Worker: Updating a reservation</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="task_queues.html" title="previous chapter">Task Queues</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, yigit ahmet ali veli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/reservations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

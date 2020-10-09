@@ -1,0 +1,940 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Workspaces &#8212; tryingrtfd soon , so very soon documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Workflows" href="workflows.html" />
+    <link rel="prev" title="Welcome to tryingrtfd’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="workspaces">
+<h1>Workspaces<a class="headerlink" href="#workspaces" title="Permalink to this headline">¶</a></h1>
+<p>Rindap (Process) Workspace is a customizable place enabling you to create your Tasks, Workers, TaskQueues and Workflows
+elements in it to access and manage your business processes. The elements defined in one Workspace are specific to it
+and cannot be shared with other Workspace.</p>
+<p>Various tasks with different attributes, specific and modifiable workflow, various skilled workers can be
+defined in one Workspace to orchestrate your business processes efficiently in the lowest time. Business Process Workspace
+helps organizations to improve their internal processes management by providing a single container to manage, control and
+monitor the whole elements needed in one place. With Rindap, managing the inner operational processes of a company
+in a purpose-built Workspace and defining your strategies and policies for the company in a single Workspace can be done.</p>
+<div class="section" id="workspace-properties">
+<h2>Workspace Properties<a class="headerlink" href="#workspace-properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils" id="id5">
+<caption><span class="caption-text">Properties</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">field</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>sid</strong></td>
+<td>The unique string that we created to identify the Workspace resource.</td>
+</tr>
+<tr class="row-odd"><td><strong>account_sid</strong></td>
+<td>The SID of the Account that created the Workspace resource.</td>
+</tr>
+<tr class="row-even"><td><strong>friendly_name</strong></td>
+<td>The string that you assigned to describe the resource.</td>
+</tr>
+<tr class="row-odd"><td><strong>event_callback_url</strong></td>
+<td>The URL we call when an event occurs. If provided, the Workspace will publish events to this URL, for example, to collect data for reporting. See Workspace Events for more information.</td>
+</tr>
+<tr class="row-even"><td><strong>event_callback_method</strong></td>
+<td>The HTTP Request Method for calling the EventCallbackUrl</td>
+</tr>
+<tr class="row-odd"><td><strong>default_activity</strong></td>
+<td>The Activity that will be used when new Workers are created in the Workspace.</td>
+</tr>
+<tr class="row-even"><td><strong>timeout_activity</strong></td>
+<td>The Activity that will be assigned to a Worker when a Task reservation times out without a response</td>
+</tr>
+<tr class="row-odd"><td><strong>date_created</strong></td>
+<td>The date and time in GMT when the resource was created, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-even"><td><strong>date_updated</strong></td>
+<td>The date and time in GMT when the resource was last updated, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-odd"><td><strong>url</strong></td>
+<td>The absolute URL of the resource</td>
+</tr>
+<tr class="row-even"><td><strong>links</strong></td>
+<td>The URLs of related resources.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="create-a-workspace">
+<h2>Create A Workspace<a class="headerlink" href="#create-a-workspace" title="Permalink to this headline">¶</a></h2>
+<dl class="post">
+<dt id="post--v1-rindap-rest-gw-Workspaces-">
+<code class="descname">POST </code><code class="descname">/v1/rindap-rest-gw/Workspaces/</code><a class="headerlink" href="#post--v1-rindap-rest-gw-Workspaces-" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>You can create a Workspace by simply providing a friendly name</p>
+<table border="1" class="colwidths-given docutils" id="id6">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>FriendlyName</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>A descriptive string that you create to describe the Workspace resource. It can be up to 512 characters long</td>
+</tr>
+<tr class="row-odd"><td><strong>EventCallbackUrl</strong></td>
+<td>URL</td>
+<td>“”</td>
+<td>(Optional) The URL we call when an event occurs. If provided, the Workspace will publish events to this URL, for example, to collect data for reporting. See Workspace Events for more information.</td>
+</tr>
+<tr class="row-even"><td><strong>EventCallbackMethod</strong></td>
+<td>String</td>
+<td>POST</td>
+<td>(Optional) The HTTP Request Method for calling the EventCallbackUrl</td>
+</tr>
+<tr class="row-odd"><td><strong>DefaultActivity</strong></td>
+<td>String</td>
+<td>offline</td>
+<td>(Optional) The Activity that will be used when new Workers are created in the Workspace.</td>
+</tr>
+<tr class="row-even"><td><strong>TimeoutActivity</strong></td>
+<td>String</td>
+<td>offline</td>
+<td>(Optional) The Activity that will be assigned to a Worker when a Task reservation times out without a response</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example-code-pieces-using-sdks">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#example-code-pieces-using-sdks" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X POST https://api.rindap.com/v1/rindap-rest-gw/Workspaces <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;FriendlyName=my test workspace&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;EventCallbackUrl=https://my-backbone.mydomain.org&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;EventCallMethod=GET&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;DefaultActivity=busy&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;TimeoutActivity=offline&#39;</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>// Install the Java helper library from rindap.com/docs/java/install
+
+import com.rindap.Rindap;
+import com.rindap.rest.v1.workspace.Task;
+
+public class Example {
+    // Find your Account Sid and Token at rindap.com/console
+
+    public static void main(String[] args) {
+
+        Rindap.init(&quot;YOUR_ACCOUNT_SID&quot;,&quot;YOUR_AUTH_TOKEN&quot;);
+
+        Workspace ws = Workspace.creator(&quot;my test workspace&quot;)
+            .setEventCallbackUrl(&quot;https://my-backbone.mydomain.org&quot;)
+            .setEventCallbackMethod(HttpMethod.GET)
+            .setDefaultActivity(&quot;busy&quot;)
+            .setTimeoutActivity(&quot;idle)
+            .create();
+
+        System.out.println(ws);
+    }
+}
+</pre></div>
+</div>
+<p><strong>Phyton</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="n">ws</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;my test workspace&quot;</span><span class="p">,</span>
+                            <span class="n">event_callback_url</span><span class="o">=</span><span class="s2">&quot;https://my-backbone.mydomain.org&quot;</span><span class="p">,</span>
+                            <span class="n">event_callback_method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+                            <span class="n">default_activity</span><span class="o">=</span><span class="s2">&quot;busy&quot;</span><span class="p">,</span>
+                            <span class="n">timeout_activity</span><span class="o">=</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FriendlyName: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Create a workspace</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+<span class="nx">friendlyName</span><span class="o">:</span> <span class="s2">&quot;Friendly Name&quot;</span><span class="p">,</span>
+<span class="nx">eventCallbackUrl</span><span class="o">:</span> <span class="s2">&quot;https://my-backbone.mydomain.org&quot;</span><span class="p">,</span>
+<span class="nx">eventCallbackMethod</span><span class="o">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+<span class="nx">defaultActivity</span><span class="o">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
+<span class="nx">timeoutActivity</span><span class="o">:</span> <span class="s2">&quot;idle&quot;</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">workspace</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">// Print workspace content</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Workspace Created&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackUrl</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackMethod</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">defaultActivity</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">timeoutActivity</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>CSharp</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Create a workspace</span>
+        <span class="n">WorkspaceResource</span> <span class="n">ws</span> <span class="p">=</span> <span class="n">WorkspaceResource</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
+            <span class="n">friendlyName</span><span class="p">:</span> <span class="s">&quot;Very Friendly Name From C#&quot;</span><span class="p">,</span>
+            <span class="n">eventCallbackUrl</span><span class="p">:</span> <span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&quot;https://my-backbone.mydomain.org&quot;</span><span class="p">),</span>
+            <span class="n">eventCallbackMethod</span><span class="p">:</span> <span class="s">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">defaultActivity</span><span class="p">:</span> <span class="s">&quot;busy&quot;</span><span class="p">,</span>
+            <span class="n">timeoutActivity</span><span class="p">:</span> <span class="s">&quot;offline&quot;</span>
+            <span class="p">);</span>
+
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Friendly Name        : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid                  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Default Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">DefaultActivity</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Timeout Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">TimeoutActivity</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event Calllback Url  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackUrl</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event callback Method: &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackMethod</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test workspace&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;default_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;timeout_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_callback_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https:my-backbone.mydomain.org&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_callback_method&quot;</span><span class="p">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;tasks&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workflows&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;task_queues&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="get-all-workspaces">
+<h2>Get All Workspaces<a class="headerlink" href="#get-all-workspaces" title="Permalink to this headline">¶</a></h2>
+<p>This endpoint retrives all Workspaces</p>
+<table border="1" class="colwidths-given docutils" id="id7">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>FriendlyName</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>Human readable friendly name</td>
+</tr>
+<tr class="row-odd"><td><strong>PageSize</strong></td>
+<td>Integer</td>
+<td>50</td>
+<td>Page size for paging</td>
+</tr>
+<tr class="row-even"><td><strong>FriendlyName</strong></td>
+<td>Integer</td>
+<td>0</td>
+<td>Page number for paging</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>CSharp</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Fetch all workspaces</span>
+        <span class="kt">var</span> <span class="n">workspaces</span> <span class="p">=</span> <span class="n">WorkspaceResource</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="n">limit</span><span class="p">:</span> <span class="m">100</span><span class="p">,</span> <span class="n">pageSize</span><span class="p">:</span> <span class="m">100</span><span class="p">);</span>
+
+        <span class="c1">// Iterate all workspaces</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">ws</span> <span class="k">in</span> <span class="n">workspaces</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Print workspace content</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Friendly Name        : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid                  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Default Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">DefaultActivity</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Timeout Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">TimeoutActivity</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event Calllback Url  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackUrl</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event callback Method: &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackMethod</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Phyton</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="n">lists</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">friendly_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">lists</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">workspace</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Get all workspaces</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">.</span><span class="nx">list</span><span class="p">({</span>
+<span class="nx">limit</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="nx">page_size</span><span class="o">:</span> <span class="mi">100</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">result</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">workspace</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackUrl</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackMethod</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">defaultActivity</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">timeoutActivity</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;page_size&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="nt">&quot;page&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;first_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/?Page=0&amp;PageSize=50&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;previous_page_url&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/?Page=0&amp;PageSize=50&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;workspaces&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;next_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/?Page=1&amp;PageSize=50&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;workspaces&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+    <span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test workspace&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;default_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;timeout_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_callback_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https:my-backbone.mydomain.org&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_callback_method&quot;</span><span class="p">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;tasks&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workflows&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;task_queues&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues&quot;</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fetch-a-workspace">
+<h2>Fetch A Workspace<a class="headerlink" href="#fetch-a-workspace" title="Permalink to this headline">¶</a></h2>
+<p>This endpoint fetches a single Workspace with all Its details</p>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table border="1" class="colwidths-given docutils" id="id8">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id2">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Workspace</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span><span class="p">.</span><span class="na">fetcher</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">fetch</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">ws</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Phyton</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="n">ws_fetcher</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">ws_fetcher</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">workspace</span><span class="o">.</span><span class="n">friendly_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Get a workspaces with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">).</span><span class="nx">fetch</span><span class="p">(</span>
+<span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">workspace</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackUrl</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackMethod</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">defaultActivity</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">timeoutActivity</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>CSharp</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Get a workspace with SID</span>
+        <span class="kt">var</span> <span class="n">ws</span> <span class="p">=</span> <span class="n">WorkspaceResource</span><span class="p">.</span><span class="n">Fetch</span><span class="p">(</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print workspace content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Friendly Name        : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid                  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Default Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">DefaultActivity</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Timeout Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">TimeoutActivity</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event Calllback Url  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackUrl</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event callback Method: &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackMethod</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test workspace&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;default_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
+<span class="nt">&quot;timeout_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;event_callback_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https:my-backbone.mydomain.org&quot;</span><span class="p">,</span>
+<span class="nt">&quot;event_callback_method&quot;</span><span class="p">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;tasks&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workflows&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task_queues&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="update-a-workspace">
+<h2>Update a Workspace<a class="headerlink" href="#update-a-workspace" title="Permalink to this headline">¶</a></h2>
+<dl class="put">
+<dt id="put--v1-rindap-rest-gw-Workspaces-WorkspaceSID">
+<code class="descname">PUT </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}</code><a class="headerlink" href="#put--v1-rindap-rest-gw-Workspaces-WorkspaceSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table border="1" class="colwidths-given docutils" id="id9">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace</td>
+</tr>
+<tr class="row-odd"><td><strong>FriendlyName</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>(Optional) A descriptive string that you create to describe the Workspace resource. It can be up to 512 characters long</td>
+</tr>
+<tr class="row-even"><td><strong>EventCallbackUrl</strong></td>
+<td>URL</td>
+<td>“”</td>
+<td>(Optional) The URL we call when an event occurs. If provided, the Workspace will publish events to this URL, for example, to collect data for reporting. See Workspace Events for more information.</td>
+</tr>
+<tr class="row-odd"><td><strong>EventCallbackMethod</strong></td>
+<td>String</td>
+<td>POST</td>
+<td>(Optional) The HTTP Request Method for calling the EventCallbackUrl</td>
+</tr>
+<tr class="row-even"><td><strong>DefaultActivity</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>(Optional) The Activity that will be used when new Workers are created in the Workspace.</td>
+</tr>
+<tr class="row-odd"><td><strong>TimeoutActivity</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>(Optional) The Activity that will be assigned to a Worker when a Task reservation times out without a response</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id3">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;FriendlyName=my test workspace updated&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;EventCallbackUrl=https://my-backbone.my-new-domain.org&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;EventCallMethod=POST&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;DefaultActivity=idle&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;TimeoutActivity=busy&#39;</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Workspace</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span>
+            <span class="p">.</span><span class="na">updater</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setFriendlyName</span><span class="p">(</span><span class="s">&quot;my test workspace updated&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setEventCallbackUrl</span><span class="p">(</span><span class="s">&quot;https://my-backbone.my-new-domain.org&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setEventCallbackMethod</span><span class="p">(</span><span class="s">&quot;POST&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setDefaultActivity</span><span class="p">(</span><span class="s">&quot;idle&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setTimeoutActivity</span><span class="p">(</span><span class="s">&quot;offline&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">update</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">ws</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Phyton</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="n">ws_fetcher</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="n">ws_fetcher</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">friendly_name</span><span class="o">=</span><span class="s2">&quot;New Friendly Name&quot;</span><span class="p">,</span> <span class="n">default_activity</span><span class="o">=</span><span class="s2">&quot;offline&quot;</span><span class="p">,</span>
+                <span class="n">timeout_activity</span><span class="o">=</span><span class="s2">&quot;offline&quot;</span><span class="p">,</span> <span class="n">event_callback_url</span><span class="o">=</span><span class="s2">&quot;https://domain.com&quot;</span><span class="p">,</span>
+                <span class="n">event_callback_method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Update a workspaces with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span>
+<span class="nx">friendlyName</span><span class="o">:</span> <span class="s2">&quot;New Friendly Name&quot;</span><span class="p">,</span>
+<span class="nx">eventCallbackUrl</span><span class="o">:</span> <span class="s2">&quot;https://my-backbone.mydomain.com&quot;</span><span class="p">,</span>
+<span class="nx">defaultActivity</span><span class="o">:</span> <span class="s2">&quot;offline&quot;</span><span class="p">,</span>
+<span class="nx">timeoutActivity</span><span class="o">:</span> <span class="s2">&quot;offline&quot;</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">workspace</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">friendlyName</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackUrl</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">eventCallbackMethod</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">defaultActivity</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">timeoutActivity</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>CSharp</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Update a workspace with SID</span>
+        <span class="kt">var</span> <span class="n">ws</span> <span class="p">=</span> <span class="n">WorkspaceResource</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">friendlyName</span><span class="p">:</span> <span class="s">&quot;New Workspace Name&quot;</span><span class="p">,</span>
+            <span class="n">eventCallbackUrl</span><span class="p">:</span> <span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&quot;https://my-backbone.mydomain.com&quot;</span><span class="p">),</span>
+            <span class="n">eventCallbackMethod</span><span class="p">:</span> <span class="s">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">defaultActivity</span><span class="p">:</span> <span class="s">&quot;busy&quot;</span><span class="p">,</span>
+            <span class="n">timeoutActivity</span><span class="p">:</span> <span class="s">&quot;busy&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print workspace content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Friendly Name        : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">FriendlyName</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid                  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Default Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">DefaultActivity</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Timeout Activity     : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">TimeoutActivity</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event Calllback Url  : &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackUrl</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Event callback Method: &quot;</span> <span class="p">+</span> <span class="n">ws</span><span class="p">.</span><span class="n">EventCallbackMethod</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my test workspace updated&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;default_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+<span class="nt">&quot;timeout_activity&quot;</span><span class="p">:</span> <span class="s2">&quot;offline&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-04T01:36:02+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;event_callback_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https:my-backbone.my-new-domain.org&quot;</span><span class="p">,</span>
+<span class="nt">&quot;event_callback_method&quot;</span><span class="p">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;tasks&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workers&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workflows&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;task_queues&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/TaskQueues&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="delete-a-workspace">
+<h2>Delete a Workspace<a class="headerlink" href="#delete-a-workspace" title="Permalink to this headline">¶</a></h2>
+<dl class="delete">
+<dt id="delete--v1-rindap-rest-gw-Workspaces-WorkspaceSID">
+<code class="descname">DELETE </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}</code><a class="headerlink" href="#delete--v1-rindap-rest-gw-Workspaces-WorkspaceSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table border="1" class="colwidths-given docutils" id="id10">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id4">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X DEL https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Workspace</span><span class="p">.</span><span class="na">deleter</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">).</span><span class="na">delete</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Phyton</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="n">ww_fetcher</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ww_fetcher</span><span class="o">.</span><span class="n">delete</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Workspaces have been deleted!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Delete a workspaces with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>CSharp</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.ComponentModel.DataAnnotations</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Delete a workspace with SID</span>
+        <span class="kt">var</span> <span class="n">isDeleted</span> <span class="p">=</span> <span class="n">WorkspaceResource</span><span class="p">.</span><span class="n">Delete</span><span class="p">(</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">isDeleted</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace has been deleted!&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">tryingrtfd</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Workspaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workspace-properties">Workspace Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-workspace">Create A Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-all-workspaces">Get All Workspaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fetch-a-workspace">Fetch A Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-a-workspace">Update a Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-a-workspace">Delete a Workspace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">Workers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tasks.html">Tasks</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to tryingrtfd’s documentation!</a></li>
+      <li>Next: <a href="workflows.html" title="next chapter">Workflows</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, yigit ahmet ali veli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/workspaces.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

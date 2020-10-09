@@ -1,0 +1,1070 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tasks &#8212; tryingrtfd soon , so very soon documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Workers" href="workers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tasks">
+<h1>Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h1>
+<p>In process management, a task is an activity that needs to be done, leading to the final deliverable. Tasks are a
+small essential piece of work that must be carried out to progress the whole project. For example, in business process
+systems, a process could consist of several tasks or activities to be completed in a defined period of time. CRM or
+ticketing systems allow organizations to generate tasks such as creating reminders in customer accounts that are synced
+with the calendar.</p>
+<div class="section" id="task-attributes">
+<h2>Task Attributes<a class="headerlink" href="#task-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Task attributes are the core features of Tasks that are evaluated in the Workflow process. Consequently, based on
+the evaluation results, the path a task will follow in the Workflow is determined. Attributes are expressed in JSON data,
+for example:</p>
+</div>
+<div class="section" id="task-lifecycle">
+<h2>Task Lifecycle<a class="headerlink" href="#task-lifecycle" title="Permalink to this headline">¶</a></h2>
+<p>A Task has a Lifecycle to manage a task. When a task is created, either manually or automatically by a system, it can
+pass through several states it is completed by its own or is closed manually. A Task’s lifecycle starts when the task
+is generated, then the task is assigned, is processed, is completed and finally is verified. In the process management
+system, a user submits a task to a Workflow. Afterwards, the Task’s attributes are evaluated against the Filters in the
+Workflow , starting from the starting Filter defined in the Workflow until a match is found. When a match is found, the
+Task is pushed to the TaskQueue designated by the matching Filter. Task waits in the queue till a capable and available
+Worker is handled the Task.</p>
+</div>
+<div class="section" id="task-properties">
+<h2>Task Properties<a class="headerlink" href="#task-properties" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-given docutils" id="id5">
+<caption><span class="caption-text">Properties</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">field</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>sid</strong></td>
+<td>The unique string that we created to identify the Task resource.</td>
+</tr>
+<tr class="row-odd"><td><strong>account_sid</strong></td>
+<td>The SID of the Account that created the Task resource.</td>
+</tr>
+<tr class="row-even"><td><strong>workspace_sid</strong></td>
+<td>The SID of the Workspace that contains the Task</td>
+</tr>
+<tr class="row-odd"><td><strong>workflow_sid</strong></td>
+<td>The SID of the Workflow that is controlling the Task</td>
+</tr>
+<tr class="row-even"><td><strong>workflow_friendly_name</strong></td>
+<td>The friendly name of the Workflow that is controlling the Task</td>
+</tr>
+<tr class="row-odd"><td><strong>initial_attributes</strong></td>
+<td>A JSON String for the attributes of the task. This value cannot be changed, for showing the original state of the Task</td>
+</tr>
+<tr class="row-even"><td><strong>attributes</strong></td>
+<td>A JSON String for the attributes of the task. This field can be updated throughout the Lifecycle of the Task and will be used for evaluating filters of the Task’s Workflow</td>
+</tr>
+<tr class="row-odd"><td><strong>assignment_status</strong></td>
+<td>The current status of the Task’s assignment. Can be: pending, awaiting_reservation,reserved, postponed, accepted, cancelled or completed.</td>
+</tr>
+<tr class="row-even"><td><strong>task_queue_sid</strong></td>
+<td>The SID of the TaskQueue that the Task was last sent to</td>
+</tr>
+<tr class="row-odd"><td><strong>task_queue_sid_friendly_name</strong></td>
+<td>The friendly name of the TaskQueue that the Task was last sent to</td>
+</tr>
+<tr class="row-even"><td><strong>age</strong></td>
+<td>The number of seconds since the Task was created.</td>
+</tr>
+<tr class="row-odd"><td><strong>step_history</strong></td>
+<td>A JSON Array of JSON Objects, showing the steps which were selected for the Task throughout its lifecycle. The JSON Objects hold the Step Id and the Date it was selected for the Task</td>
+</tr>
+<tr class="row-even"><td><strong>task_queue_history</strong></td>
+<td>A JSON Array of JSON Objects, showing the Task Queues to which the Task was sent, throughout its lifecyle. The JSON Objects hold the Task Queue SID, Task Queue friendly name and the Date</td>
+</tr>
+<tr class="row-odd"><td><strong>last_charge_date</strong></td>
+<td>The date The Task was last charged</td>
+</tr>
+<tr class="row-even"><td><strong>next_charge_date</strong></td>
+<td>The date The Task will be charged again, If It has not ended Its lifecycle</td>
+</tr>
+<tr class="row-odd"><td><strong>total_cost</strong></td>
+<td>The total cost of charges for The Task so far</td>
+</tr>
+<tr class="row-even"><td><strong>forked_from</strong></td>
+<td>The SID of the Parent Task , if this Task is forked from another Task. For more information , see <a class="reference external" href="https://rindap.com/task-forking/">Task Forking</a></td>
+</tr>
+<tr class="row-odd"><td><strong>postponed_till</strong></td>
+<td>The date and time in GMT, till the task is postponed , valid when The Task AssignmentStatus is <cite>postponed</cite>.</td>
+</tr>
+<tr class="row-even"><td><strong>postponing_reason</strong></td>
+<td>The explanation of the reason for postponing , valid when The Task AssignmentStatus is <cite>postponed</cite>.</td>
+</tr>
+<tr class="row-odd"><td><strong>loop_retries_left</strong></td>
+<td>The number of retries left for the current Loop Filter in the Workflow, valid when The Task AssignmentStatus is <cite>postponed</cite>. For more information, see <a class="reference external" href="https://rindap.com/workflow/">Workflow Configuration</a> .</td>
+</tr>
+<tr class="row-even"><td><strong>date_created</strong></td>
+<td>The date and time in GMT when the resource was created, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-odd"><td><strong>date_updated</strong></td>
+<td>The date and time in GMT when the resource was last updated, specified in ISO 8601 format.</td>
+</tr>
+<tr class="row-even"><td><strong>url</strong></td>
+<td>The absolute URL of the resource</td>
+</tr>
+<tr class="row-odd"><td><strong>links</strong></td>
+<td>The URLs of related resources.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="create-a-task">
+<h2>Create A Task<a class="headerlink" href="#create-a-task" title="Permalink to this headline">¶</a></h2>
+<dl class="post">
+<dt id="post--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks">
+<code class="descname">POST </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks</code><a class="headerlink" href="#post--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>You can create a task by simply providing the Task Attributes and the Workflow for the task</p>
+<table border="1" class="colwidths-given docutils" id="id6">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace in which the Task is created</td>
+</tr>
+<tr class="row-odd"><td><strong>WorkflowSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workflow that you would like Task to be handled by</td>
+</tr>
+<tr class="row-even"><td><strong>Attributes</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>A URL-encoded JSON string with the attributes of the new task. This value is passed to the Workflow’s <code class="docutils literal notranslate"><span class="pre">assignment_callback_url</span></code> when the Task is assigned to a Worker.</td>
+</tr>
+<tr class="row-odd"><td><strong>Timeout</strong></td>
+<td>Integer</td>
+<td>“”</td>
+<td>(Optional) (Max=2073600) (Min=60) Timeout value in seconds, for the Task to be closed after, if the Task assignment_status is not <cite>completed</cite> or <cite>cancelled</cite> at the time of control.Task will be “cancelled” with reason “Task TTL Exceeded”</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example-code-pieces-using-sdks">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#example-code-pieces-using-sdks" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X POST https://api.rindap.com/v1/rindap-rest-gw/Workspaces/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Tasks <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;WorkflowSid=WWb898bae42dec49e792f37f9639bf625c&#39;</span>
+--data-urlencode <span class="s1">&#39;Attributes={&quot;some_integer&quot;: 55,&quot;some_text&quot;: &quot;hello world&quot;,&quot;some_boolean&quot; : true}&#39;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Task</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Task</span><span class="p">.</span><span class="na">creator</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setAttributes</span><span class="p">(</span><span class="s">&quot;{\&quot;some_integer\&quot;: 55, \&quot;some_text\&quot;: \&quot;hello world\&quot;,\&quot;some_boolean\&quot; : true}&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setWorkflowSid</span><span class="p">(</span><span class="s">&quot;WWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">create</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create a task</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">workflow_sid</span><span class="o">=</span><span class="s2">&quot;WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+                            <span class="n">attributes</span><span class="o">=</span><span class="s1">&#39;{&quot;some_integer&quot;: 55, &quot;some_text&quot;: &quot;hello world&quot;,&quot;some_boolean&quot; : true}&#39;</span><span class="p">)</span>
+
+<span class="c1"># Print content of task</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskSid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Crate a task</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span>
+<span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+    <span class="nx">attributes</span><span class="o">:</span> <span class="s1">&#39;{&quot;some_integer&quot;: 55, &quot;some_text&quot;: &quot;hello world&quot;,&quot;some_boolean&quot; : true}&#39;</span><span class="p">,</span>
+    <span class="nx">workflowSid</span><span class="o">:</span> <span class="s1">&#39;WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">task</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">attributes</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">workflowSid</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>CSharp</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Newtonsoft.Json</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Create an attributes</span>
+        <span class="kt">var</span> <span class="n">attributes</span> <span class="p">=</span> <span class="n">JsonConvert</span><span class="p">.</span><span class="n">SerializeObject</span><span class="p">(</span><span class="k">new</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="n">Object</span><span class="p">&gt;()</span>
+        <span class="p">{</span>
+            <span class="p">{</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;support&quot;</span><span class="p">}</span>
+        <span class="p">},</span> <span class="n">Formatting</span><span class="p">.</span><span class="n">Indented</span><span class="p">);</span>
+
+        <span class="c1">// Create a task</span>
+        <span class="kt">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">TaskResource</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">workflowSid</span><span class="p">:</span> <span class="s">&quot;WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">attributes</span><span class="p">:</span> <span class="n">attributes</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="p">:</span> <span class="m">100</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print task content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">attribute</span> <span class="k">in</span> <span class="n">task</span><span class="p">.</span><span class="n">Attributes</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Attributes: &quot;</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tKey   :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Key</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tValue :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Timeout       : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Timeout</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;WorkflowSid   : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">WorkflowSid</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WT9a69287d97fe4110a76ef9db8cf728f8&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workflow_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workflow_friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my first workflow&quot;</span><span class="p">,</span>
+<span class="nt">&quot;initial_attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;some_integer&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="nt">&quot;some_text&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span>
+    <span class="s2">&quot;some_boolean&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;some_integer&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="nt">&quot;some_text&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span>
+    <span class="s2">&quot;some_boolean&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="nt">&quot;assignment_status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+<span class="nt">&quot;step&quot;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+<span class="nt">&quot;reason&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;last_charge_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;next_charge_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-02-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;total_cost&quot;</span><span class="p">:</span> <span class="s2">&quot;0.01&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WT9a69287d97fe4110a76ef9db8cf728f8&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workflow&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows/WWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;age&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="get-all-tasks">
+<h2>Get All Tasks<a class="headerlink" href="#get-all-tasks" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This endpoint retrives all Tasks</p>
+<table border="1" class="colwidths-given docutils" id="id7">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace in which the Task is created</td>
+</tr>
+<tr class="row-odd"><td><strong>FriendlyName</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>Human readable friendly name</td>
+</tr>
+<tr class="row-even"><td><strong>PageSize</strong></td>
+<td>Integer</td>
+<td>50</td>
+<td>Page size for paging</td>
+</tr>
+<tr class="row-odd"><td><strong>Page</strong></td>
+<td>Integer</td>
+<td>0</td>
+<td>Page number for paging</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Fetch all tasks</span>
+        <span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="n">TaskResource</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="m">100</span><span class="p">,</span>
+            <span class="n">pageSize</span><span class="p">:</span> <span class="m">100</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Iterate on all tasks</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">task</span> <span class="k">in</span> <span class="n">tasks</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Print task content</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">attribute</span> <span class="k">in</span> <span class="n">task</span><span class="p">.</span><span class="n">Attributes</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Attributes: &quot;</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tKey   :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Key</span><span class="p">);</span>
+                <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tValue :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Timeout       : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Timeout</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;WorkflowSid   : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">WorkflowSid</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Fetch all tasks</span>
+<span class="n">task_fetcher</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">task_fetcher</span><span class="p">:</span>
+    <span class="c1"># Print content of task</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskSid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+
+<span class="c1">// List all tasks</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span>
+<span class="p">.</span><span class="nx">list</span><span class="p">({</span>
+    <span class="nx">limit</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="nx">pageSize</span><span class="o">:</span> <span class="mi">100</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">tasks</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">tasks</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">task</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">attributes</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">workflowSid</span><span class="p">);</span>
+    <span class="p">})</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;meta&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;page_size&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="nt">&quot;page&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;first_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;previous_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;next_page_url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;workspaces&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+    <span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_callback_url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-02T12:30:58.083Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-02T12:30:58.083Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;tasks&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;workflows&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;task_queues&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fetch-a-task">
+<h2>Fetch a Task<a class="headerlink" href="#fetch-a-task" title="Permalink to this headline">¶</a></h2>
+<p>This endpoint fetches a single Task with all its details</p>
+<dl class="get">
+<dt id="get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID">
+<code class="descname">GET </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks/{TaskSID}</code><a class="headerlink" href="#get--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table border="1" class="colwidths-given docutils" id="id8">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace in which the Task is created</td>
+</tr>
+<tr class="row-odd"><td><strong>TaskSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>TaskSID (Secure Identifier) - a unique ID for the Task</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id2">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Task</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Task</span>
+            <span class="p">.</span><span class="na">fetcher</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">fetch</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get a task with sid</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+
+<span class="c1"># Print content of task</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskSid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+
+<span class="c1">// Get a tasks with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">task</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">attributes</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">workflowSid</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Get a tasks with SID</span>
+        <span class="kt">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">TaskResource</span><span class="p">.</span><span class="n">Fetch</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print task content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">attribute</span> <span class="k">in</span> <span class="n">task</span><span class="p">.</span><span class="n">Attributes</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Attributes: &quot;</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tKey   :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Key</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tValue :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Timeout       : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Timeout</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;WorkflowSid   : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">WorkflowSid</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WT9a69287d97fe4110a76ef9db8cf728f8&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workflow_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workflow_friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my first workflow&quot;</span><span class="p">,</span>
+<span class="nt">&quot;initial_attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;some_integer&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="nt">&quot;some_text&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span>
+    <span class="s2">&quot;some_boolean&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;some_integer&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="nt">&quot;some_text&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span>
+    <span class="s2">&quot;some_boolean&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="nt">&quot;assignment_status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+<span class="nt">&quot;step&quot;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+<span class="nt">&quot;reason&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;last_charge_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;next_charge_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-02-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;total_cost&quot;</span><span class="p">:</span> <span class="s2">&quot;0.01&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workflow&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows/WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;age&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="update-a-task">
+<h2>Update a Task<a class="headerlink" href="#update-a-task" title="Permalink to this headline">¶</a></h2>
+<dl class="put">
+<dt id="put--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID">
+<code class="descname">PUT </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks/{TaskSID}</code><a class="headerlink" href="#put--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table border="1" class="colwidths-given docutils" id="id9">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace in which the Task is created</td>
+</tr>
+<tr class="row-odd"><td><strong>TaskSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>TaskSID (Secure Identifier) - a unique ID for the Task</td>
+</tr>
+<tr class="row-even"><td><strong>Attributes</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>(Optional) A URL-encoded JSON string that will replace the <cite>Attributes</cite> field of your Task. You should use this parameter for updating the data related to this Task.</td>
+</tr>
+<tr class="row-odd"><td><strong>AssignmentStatus</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>(Optional) you can update the assignment status of your task by one of these options: <cite>pending</cite>,`completed`,`cancelled`. If you set your task’s <cite>assignment_status</cite> to <cite>pending</cite> , it will be processed by Its Workflow once again , from the Workflow Step that’s shown at the <cite>step</cite> field of the Task. If you set this field to <cite>cancelled</cite> , you can also send the <cite>Reason</cite> parameter for telling what reason the Task is cancelled for.</td>
+</tr>
+<tr class="row-even"><td><strong>Reason</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>(Optional) Can only be sent when the <cite>AssignmentStatus</cite> parameter is set as <cite>cancelled</cite> as well.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id3">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;Attributes={&quot;result_of_some_query&quot;: 55,&quot;some_text&quot;: &quot;new related info&quot;}&#39;</span> <span class="se">\</span>
+--data-urlencode <span class="s1">&#39;AssignmentStatus=pending&#39;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Task</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Task</span>
+            <span class="p">.</span><span class="na">updater</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setAttributes</span><span class="p">(</span><span class="s">&quot;{\&quot;result_of_some_query\&quot;: 55, \&quot;some_text\&quot;: \&quot;new related info\&quot;}&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">setAssignmentStatus</span><span class="p">(</span><span class="s">&quot;pending&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">update</span><span class="p">();</span>
+
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get a task with sid</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Update task</span>
+<span class="n">updated_task</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">assignment_status</span><span class="o">=</span><span class="s2">&quot;completed&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print content of task</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TaskSid: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">updated_task</span><span class="o">.</span><span class="n">sid</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+<span class="c1">// Update a tasks</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">update</span><span class="p">({</span>
+    <span class="nx">assignmentStatus</span><span class="o">:</span> <span class="s2">&quot;cancelled&quot;</span>
+<span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">task</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">sid</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">attributes</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">task</span><span class="p">.</span><span class="nx">workflowSid</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Update a tasks with SID</span>
+        <span class="kt">var</span> <span class="n">task</span> <span class="p">=</span> <span class="n">TaskResource</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">assignmentStatus</span><span class="p">:</span> <span class="s">&quot;cancelled&quot;</span>
+            <span class="p">);</span>
+
+        <span class="c1">// Print task content</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Workspace Sid : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Sid</span><span class="p">);</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">attribute</span> <span class="k">in</span> <span class="n">task</span><span class="p">.</span><span class="n">Attributes</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Attributes: &quot;</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tKey   :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Key</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\tValue :&quot;</span> <span class="p">+</span> <span class="n">attribute</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Timeout       : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">Timeout</span><span class="p">);</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;WorkflowSid   : &quot;</span> <span class="p">+</span> <span class="n">task</span><span class="p">.</span><span class="n">WorkflowSid</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>The above command returns JSON structured like this:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WT9a69287d97fe4110a76ef9db8cf728f8&quot;</span><span class="p">,</span>
+<span class="nt">&quot;account_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workspace_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workflow_sid&quot;</span><span class="p">:</span> <span class="s2">&quot;WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;workflow_friendly_name&quot;</span><span class="p">:</span> <span class="s2">&quot;my first workflow&quot;</span><span class="p">,</span>
+<span class="nt">&quot;initial_attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;some_integer&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="nt">&quot;some_text&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span>
+    <span class="s2">&quot;some_boolean&quot;</span> <span class="p">:</span> <span class="kc">true</span>
+<span class="p">},</span>
+<span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;result_of_some_query&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="nt">&quot;some_text&quot;</span><span class="p">:</span> <span class="s2">&quot;new related info&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;assignment_status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+<span class="nt">&quot;step&quot;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+<span class="nt">&quot;reason&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+<span class="nt">&quot;date_created&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;date_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;last_charge_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-01-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;next_charge_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-02-01T16:11:35+03:00&quot;</span><span class="p">,</span>
+<span class="nt">&quot;total_cost&quot;</span><span class="p">:</span> <span class="s2">&quot;0.01&quot;</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;links&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workspace&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;workflow&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/Workflows/WWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;age&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="delete-a-task">
+<h2>Delete a Task<a class="headerlink" href="#delete-a-task" title="Permalink to this headline">¶</a></h2>
+<dl class="delete">
+<dt id="delete--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID">
+<code class="descname">DELETE </code><code class="descname">/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/Tasks/{TaskSID}</code><a class="headerlink" href="#delete--v1-rindap-rest-gw-Workspaces-WorkspaceSID-Tasks-TaskSID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table border="1" class="colwidths-given docutils" id="id10">
+<caption><span class="caption-text">Query Parameters</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="5%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>WorkspaceSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>The SID of the Workspace in which the Task is created</td>
+</tr>
+<tr class="row-odd"><td><strong>TaskSID</strong></td>
+<td>String</td>
+<td>“”</td>
+<td>TaskSID (Secure Identifier) - a unique ID for the Task</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id4">
+<h3>Example code pieces using SDKs<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><strong>Shell</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -X DEL https://api.rindap.com/v1/rindap-rest-gw/Workspaces/WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <span class="se">\</span>
+/Tasks/WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-H <span class="s2">&quot;Authorization: Bearer {YOUR_ACCOUNT_SID}.{YOUR_AUTH_TOKEN}&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type:application/x-www-form-urlencoded&quot;</span>
+</pre></div>
+</div>
+<p><strong>Java</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Install the Java helper library from rindap.com/docs/java/install</span>
+
+<span class="kn">import</span> <span class="nn">com.rindap.Rindap</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.rindap.rest.v1.workspace.Task</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="p">{</span>
+    <span class="c1">// Find your Account Sid and Token at rindap.com/console</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">Rindap</span><span class="p">.</span><span class="na">init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span><span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="n">Task</span><span class="p">.</span><span class="na">deleter</span><span class="p">(</span><span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+            <span class="p">.</span><span class="na">delete</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">rindap.rest</span> <span class="kn">import</span> <span class="n">Rindap</span>
+
+<span class="c1"># Authenticate</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">rindap</span> <span class="o">=</span> <span class="n">Rindap</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+<span class="c1"># Get Workspace with workspace_sid</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">rindap</span><span class="o">.</span><span class="n">workspaces</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get a task with sid and delete it</span>
+<span class="k">if</span> <span class="n">workspace</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task has been deleted!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>JS</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Rindap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rindap&#39;</span><span class="p">);</span>
+
+<span class="c1">// Authenticate</span>
+<span class="kd">var</span> <span class="nx">rindap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rindap</span><span class="p">(</span><span class="s2">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s2">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+
+<span class="c1">// Get a tasks with SID</span>
+<span class="nx">rindap</span><span class="p">.</span><span class="nx">workspaces</span><span class="p">(</span><span class="s1">&#39;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">tasks</span><span class="p">(</span><span class="s2">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>C#</strong></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Rindap.Rest.V1.Workspace</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Authenticate</span>
+        <span class="n">RindapClient</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="s">&quot;YOUR_ACCOUNT_SID&quot;</span><span class="p">,</span> <span class="s">&quot;YOUR_AUTH_TOKEN&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Get a tasks with SID</span>
+        <span class="kt">var</span> <span class="n">isDeleted</span> <span class="p">=</span> <span class="n">TaskResource</span><span class="p">.</span><span class="n">Delete</span><span class="p">(</span>
+            <span class="n">pathWorkspaceSid</span><span class="p">:</span> <span class="s">&quot;WSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span class="p">,</span>
+            <span class="n">pathSid</span><span class="p">:</span> <span class="s">&quot;WTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+            <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">isDeleted</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Task has been deleted!&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">tryingrtfd</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workspaces.html">Workspaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workers.html">Workers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tasks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#task-attributes">Task Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#task-lifecycle">Task Lifecycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#task-properties">Task Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-task">Create A Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-all-tasks">Get All Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fetch-a-task">Fetch a Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-a-task">Update a Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-a-task">Delete a Task</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="workers.html" title="previous chapter">Workers</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, yigit ahmet ali veli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/tasks.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
