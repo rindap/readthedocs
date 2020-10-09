@@ -240,6 +240,35 @@ Example code pieces using SDKs
 Get All TaskQueues
 --------------------------
 
+.. http:get:: /v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues
+
+.. list-table:: Query Parameters
+   :widths: 20 15 5 60
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - **WorkspaceSID**
+     - String
+     - ""
+     - The SID of the `Workspace`
+   * - **FriendlyName**
+     - String
+     - ""
+     - (optional) Human readable friendly name 
+   * - **PageSize**
+     - Integer
+     - 50
+     - Page size for paging
+   * - **Page**
+     - Integer
+     - 0
+     - Page number for paging
+
+
+
 Example code pieces using SDKs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -355,7 +384,7 @@ Example code pieces using SDKs
     }
 
 
-> The above command returns JSON structured like this:
+**The above command returns JSON structured like this:**
 
 .. code-block:: json
 
@@ -387,22 +416,30 @@ Example code pieces using SDKs
 
 
 
-### HTTP Request
-`GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues`
-
-### Query Parameters 
-Parameter | Type | Default | Description
---------- | ------- | ------- | -----------
-WorkspaceSID | String | '' | The SID of the Workspace 
-FriendlyName | String | '' | (optional) Human readable friendly name 
-PageSize | Integer | 50 | Page size for paging
-Page | Integer| 0 | Page number for paging
-
-
-
-
 Fetch a TaskQueue
 --------------------
+
+.. http:get:: /v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}
+
+This endpoint fetches a single TaskQueue with all its details
+
+.. list-table:: Query Parameters
+   :widths: 20 15 5 60
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - **WorkspaceSID**
+     - String
+     - ""
+     - The SID of the `Workspace`
+   * - **TaskQueueSID**
+     - String
+     - ""
+     - The SID of the TaskQueue
+
 
 Example code pieces using SDKs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -530,19 +567,37 @@ Example code pieces using SDKs
     }
 
 
-This endpoint fetches a single TaskQueue with all its details
 
-### HTTP Request
-`GET https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}`
+Update a TaskQueue
+-----------------------
 
-### Query Parameters 
-Parameter | Type | Default | Description
---------- | ------- | ------- | -----------
-WorkspaceSID | String | '' | Workspace SID in which the Task is created
-TaskQueueSID | String | '' | The SID of the TaskQueue
+.. http:put:: /v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}
 
+.. list-table:: Query Parameters
+   :widths: 20 15 5 60
+   :header-rows: 1
 
-##Update a TaskQueue
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - **WorkspaceSID**
+     - String
+     - ""
+     - The SID of the `Workspace`
+   * - **TaskQueueSID**
+     - String
+     - ""
+     - The SID of the TaskQueue
+   * - **FriendlyName**
+     - String
+     - ""
+     - Human readable friendly name. It can be 512 characters long 
+   * - **WorkerRequirements**
+     - JSON Object
+     - {"==":[1,1]}
+     - (optional) A URL-encoded JSON string , representing a JsonLogic rule for deciding the Worker relations for the TaskQueue
+
 
 Example code pieces using SDKs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -676,21 +731,29 @@ Example code pieces using SDKs
     }
 
 
-### HTTP Request
-`PUT https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}`
-
-### Query Parameters 
-Parameter | Type | Description
---------- | -------  | -----------
-WorkspaceSID | String | The SID of the Workspace
-TaskQueueSID | String | The SID of the TaskQueue
-FriendlyName | String | Human readable friendly name 
-WorkerRequirements | JSON Object | A URL-encoded JSON string , representing a JsonLogic rule for deciding the Worker relations for the TaskQueue
-
-
-
 Delete a TaskQueue
 --------------------
+
+.. http:delete:: /v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}
+
+
+.. list-table:: Query Parameters
+   :widths: 20 15 5 60
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - **WorkspaceSID**
+     - String
+     - ""
+     - The SID of the `Workspace`
+   * - **TaskQueueSID**
+     - String
+     - ""
+     - The SID of the TaskQueue
+
 
 Example code pieces using SDKs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -790,12 +853,3 @@ Example code pieces using SDKs
     }
 
 
-
-### HTTP Request
-`DEL https://api.rindap.com/v1/rindap-rest-gw/Workspaces/{WorkspaceSID}/TaskQueues/{TaskQueueSID}`
-
-### Query Parameters 
-Parameter | Type | Default | Description
---------- | ------- | ------- | -----------
-WorkspaceSID | String | '' | The SID of the Workspace
-TaskQueueSID | String | '' | The SID of the TaskQueue

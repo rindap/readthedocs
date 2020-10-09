@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'tryingrtfd'
-copyright = '2020, yigit ahmet ali veli'
-author = 'yigit ahmet ali veli'
+project = 'Rindap'
+copyright = '2020 hermes iletişim'
+author = 'dp@rindap.com'
 
 # The full version, including alpha/beta/rc tags
-release = 'soon , so very soon'
+release = '2020'
 
 
 # -- General configuration ---------------------------------------------------
