@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Rindap'
-copyright = '2020 hermes iletişim'
+copyright = '2020 hermes iletisim'
 author = 'dp@rindap.com'
 
 # The full version, including alpha/beta/rc tags
