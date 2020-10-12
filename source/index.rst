@@ -11,9 +11,17 @@ Rindap - REST API for BPM
 Introduction
 ############
 
-Welcome to the Rindap API! You can use our API to access Rindap API endpoints, which can get information on Tasks, Taskrouters, Workflows, Workers etc. in our database.
+Welcome to the Rindap API documentation! Rindap helps companies to increase their work efficiency by offering developers a low-code BPM platform with RESTful API in order to automate business processes based on the requirements set by the management.
 
-We have language bindings in Java, CSharp, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+The reason Rindap was developed was the reason to help developers manage to automate business processes by using APIs without the need for high-cost out-of-the-box programs or complex custom developments.
+
+Developers and business analysts can cooperate to automate business processes on Rindap with ease. Developers can design workflows via a user-friendly drag&drop visual modeller, easily set business rules by filters that use visual code blocks and utilize Rindap’s RESTful API to connect to any platform, device or system without any boundaries. 
+
+By using Rindap’s RESTful API you can achieve end-to-end digital process automation across people, platforms and devices without being limited by company or department data silos. Rindap is fully compatible with any legacy software and can be used without any problems across the entire enterprise technology stack. 
+
+You can use our API documentation to get familiarized with Rindap API endpoints, which can are related to Tasks, Workspaces, Workflows, Workers and etc. 
+
+
 
 
 ##############
